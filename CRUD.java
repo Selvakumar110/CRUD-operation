@@ -95,9 +95,7 @@ public class CRUD {
 				System.out.print(res.getString(1) + "\n");
 				System.out.print(res.getString(2) + "\n");
 				System.out.print(res.getString(3) + "\n");
-				System.out.print(res.getString(4) + "\n");
-				System.out.print(res.getString(5) + "\n");
-				System.out.print(res.getString(6) + "\n");
+				
 				
 
 			}
