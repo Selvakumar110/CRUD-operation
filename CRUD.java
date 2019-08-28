@@ -7,13 +7,13 @@ import java.io.*;
 public class CRUD {
 	Connection con;
 	PreparedStatement ps;
-	
+	book b = new book();
 
 	public static void main(String[] args) {
 		library();
 	}
 
-	public void insertEmp(int getBooknumber, String getBookname, int getBookprice) {
+	public void insertbook() {
 		try {
 			
 			ps = con.prepareStatement("insert into addbook(booknumber,bookname,bookprice) values('"+ book.getBooknumber() + "','" + book.getBookname() + "','" + book.getBookprice() + "')");
@@ -34,7 +34,7 @@ public class CRUD {
 
 	}
 
-	public void updateEmp(int getBooknumber, String getBookname, int getBookprice) {
+	public void updatebook() {
 		try {
 
 			ps = con.prepareStatement("update addbook set '" + book.getBookname() + "','" + book.getBookprice()
@@ -54,7 +54,7 @@ public class CRUD {
 		}
 	}
 
-	public void deleteEmp(int getBooknumber) {
+	public void deletebook() {
 		try {
 
 			ps = con.prepareStatement("delete from addbook where '" + book.getBooknumber() + "'");
@@ -85,17 +85,15 @@ public class CRUD {
 		}
 	}
 
-	public void dispAnEmp(int s) {
+	public void dispAnbook() {
 		try {
 
 			ps = con.prepareStatement("select * from addbook where '" + book.getBooknumber() + "'");
-			ps.setInt(1, s);
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
 				System.out.print(res.getString(1) + "\n");
 				System.out.print(res.getString(2) + "\n");
 				System.out.print(res.getString(3) + "\n");
-				
 				
 
 			}
@@ -105,6 +103,7 @@ public class CRUD {
 	}
 
 	public static void library() {
+		book b = new book();
 		Scanner a = new Scanner(System.in);
 		try {
 
@@ -117,33 +116,31 @@ public class CRUD {
 				int choice=a.nextInt();
 				switch (choice) {
 				case 1: {
-
+					
 					System.out.println("Enter Book number");
-					int getBooknumber = a.nextInt();
+					b.setBooknumber(a.nextInt());
 					System.out.println("Enter Book Name");
-					String getBookname = a.nextLine();
+					b.setBookname(a.nextLine());
 					System.out.println("Enter Book price");
-					int getBookprice = a.nextInt();
-					obj.insertEmp(getBooknumber, getBookname, getBookprice);
+					b.setBookprice(a.nextInt());
+					obj.insertbook();
 					break;
 				}
 				case 2: {
 
 					System.out.println("Enter Book number");
-					int getBooknumber = a.nextInt();
+					b.setBooknumber(a.nextInt());
 					System.out.println("Enter Book name");
-					String getBookname = a.nextLine();
+					b.setBookname(a.nextLine());
 					System.out.println("Enter Book Price");
-					int getBookprice = a.nextInt();
-
-					obj.updateEmp(getBooknumber, getBookname, getBookprice);
+					b.setBookprice(a.nextInt());
+					obj.updatebook();
 					break;
 				}
 				case 3: {
 					System.out.println("Enter Book number to delete record");
-
-					int getBooknumber = a.nextInt();
-					obj.deleteEmp(getBooknumber);
+					b.setBooknumber(a.nextInt());
+					obj.deletebook();
 					break;
 				}
 				case 4: {
@@ -153,9 +150,8 @@ public class CRUD {
 				}
 				case 5: {
 					System.out.println("Enter Book number to display record");
-
-					int getBooknumber = a.nextInt();
-					obj.dispAnEmp(getBooknumber);
+					b.setBooknumber(a.nextInt());
+					obj.dispAnbook();
 					break;
 				}
 				case 6: {
@@ -170,13 +166,16 @@ public class CRUD {
 
 					a1 = a.nextInt();
 
-					if (a1 != b1) {
+					if (a1 != b1) 
+					{
 						library();
-					} else {
+						
+					} else 
+					{
 
 						System.exit(0);
 					}
-					library();
+					
 					break;
 				}
 			}
