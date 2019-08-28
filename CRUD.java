@@ -1,22 +1,23 @@
-package com.lms;
+package com.CURD;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.*;
-import java.io.*;
 
-public class CRUD {
+public class CRUD{
 	Connection con;
 	PreparedStatement ps;
 	book b = new book();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		library();
 	}
 
 	public void insertbook() {
 		try {
-			
-			ps = con.prepareStatement("insert into addbook(booknumber,bookname,bookprice) values('"+ book.getBooknumber() + "','" + book.getBookname() + "','" + book.getBookprice() + "')");
+
+			ps = con.prepareStatement("insert into addbook(booknumber,bookname,bookprice) values('"
+					+ book.getBooknumber() + "','" + book.getBookname() + "','" + book.getBookprice() + "')");
 
 			System.out.println("" + book.getBooknumber());
 
@@ -29,6 +30,7 @@ public class CRUD {
 			}
 
 		} catch (Exception e) {
+			System.out.println("Try Again");
 			e.printStackTrace();
 		}
 
@@ -46,7 +48,7 @@ public class CRUD {
 			if (i != 0) {
 				System.out.println("updated");
 			} else {
-				System.out.println("not updated");
+				System.out.println("No data Found");
 			}
 
 		} catch (Exception e) {
@@ -94,7 +96,6 @@ public class CRUD {
 				System.out.print(res.getString(1) + "\n");
 				System.out.print(res.getString(2) + "\n");
 				System.out.print(res.getString(3) + "\n");
-				
 
 			}
 		} catch (SQLException e) {
@@ -105,82 +106,89 @@ public class CRUD {
 	public static void library() {
 		book b = new book();
 		Scanner a = new Scanner(System.in);
-		try {
 
-			CRUD obj = new CRUD();
-			int ch = 0;
-			while (true) {
-				System.out.println("Library management \n" + "1. Add Book \n " + "2. Edit Book \n "
-						+ "3. Delete Book \n " + "4. Display all Book \n" + "5.Display a Book");
-			
-				int choice=a.nextInt();
-				switch (choice) {
-				case 1: {
-					
+		CRUD obj = new CRUD();
+		int ch = 0;
+
+		System.out.println("Library management \n" + "1. Add Book \n " + "2. Edit Book \n " + "3. Delete Book \n "
+				+ "4. Display all Book \n" + "5.Display a Book\n" + "6. Exit ");
+		try {
+			int choice = a.nextInt();
+			switch (choice) {
+
+			case 1:
+				try {
 					System.out.println("Enter Book number");
 					b.setBooknumber(a.nextInt());
 					System.out.println("Enter Book Name");
-					b.setBookname(a.nextLine());
+					b.setBookname(a.next());
 					System.out.println("Enter Book price");
 					b.setBookprice(a.nextInt());
 					obj.insertbook();
-					break;
-				}
-				case 2: {
 
+				} catch (InputMismatchException e) {
+					System.out.println("Try again!!!!\n");
+					library();
+				}
+				break;
+			case 2: {
+				try {
 					System.out.println("Enter Book number");
 					b.setBooknumber(a.nextInt());
 					System.out.println("Enter Book name");
-					b.setBookname(a.nextLine());
+					b.setBookname(a.next());
 					System.out.println("Enter Book Price");
 					b.setBookprice(a.nextInt());
 					obj.updatebook();
 					break;
+				} catch (InputMismatchException e) {
 				}
-				case 3: {
+				System.out.println("Try again!!!\n");
+				library();
+
+			}
+			case 3: {
+				try {
 					System.out.println("Enter Book number to delete record");
 					b.setBooknumber(a.nextInt());
 					obj.deletebook();
 					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Try again!!!\n");
+					library();
 				}
-				case 4: {
-					obj.dispAll();
+			}
+			case 4: {
+				obj.dispAll();
 
-					break;
-				}
-				case 5: {
+				break;
+			}
+			case 5: {
+				try {
 					System.out.println("Enter Book number to display record");
 					b.setBooknumber(a.nextInt());
 					obj.dispAnbook();
 					break;
-				}
-				case 6: {
-					System.exit(0);
-				}
-				default:
-
-					System.out.println("Try again");
-					int a1, b1 = 0;
-
-					System.out.println("Process Continue Press 1 Or Main page Press 0");
-
-					a1 = a.nextInt();
-
-					if (a1 != b1) 
-					{
-						library();
-						
-					} else 
-					{
-
-						System.exit(0);
-					}
-					
-					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Try again!!!\n");
+					library();
 				}
 			}
+			case 6: {
+				System.out.println("Thank You");
+				System.exit(0);
+			}
+			default:
+
+				System.out.println("Try again");
+				library();
+				break;
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Try Again!!!!\n");
+			library();
 		}
+
 	}
+
 }
