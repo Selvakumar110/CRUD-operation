@@ -3,12 +3,19 @@ package com.CURD;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class CRUD {
-	static Dbconnection get = new Dbconnection();
+public class CRUD implements Serializable {
+	Dbconnection get = new Dbconnection();
 
 	Scanner scan = new Scanner(System.in);
-	static PreparedStatement ps;
+	PreparedStatement ps;
 	book b = new book();
 
 	public static void main(String[] args) throws Exception {
@@ -130,18 +137,28 @@ public class CRUD {
 
 			case 1:
 				try {
-					System.out.println("Enter Book number");
-					b.setBooknumber(a.nextInt());
-					System.out.println("Enter Book Name");
-					b.setBookname(a.next());
-					System.out.println("Enter Book price");
-					b.setBookprice(a.nextInt());
-					obj.insertbook();
+					book books = new book();
+					Scanner scan = new Scanner(System.in);
+				
+						System.out.println("Enter Book number");
+						b.setBooknumber(a.nextInt());
+						System.out.println("Enter Book Name");
+						b.setBookname(a.next());
+						System.out.println("Enter Book price");
+						b.setBookprice(a.nextInt());
+						FileOutputStream fos = new FileOutputStream("C:sd.txt");
+						ObjectOutputStream oos = new ObjectOutputStream(fos);
+						oos.writeObject(books);
+						oos.flush();
+						System.out.println("Serialized data is saved in sd.txt file");
+						obj.insertbook();
+						
+			
 				} catch (InputMismatchException e) {
 					System.out.println("Try again!!!!\n");
 					library();
 				}
-				break;
+
 			case 2: {
 				try {
 					System.out.println("Enter Book number");
@@ -201,5 +218,4 @@ public class CRUD {
 		}
 
 	}
-
 }
