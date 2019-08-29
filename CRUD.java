@@ -4,19 +4,22 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.*;
 
-public class CRUD{
-	Connection con;
-	PreparedStatement ps;
+public class CRUD {
+	static Dbconnection get = new Dbconnection();
+
+	Scanner scan = new Scanner(System.in);
+	static PreparedStatement ps;
 	book b = new book();
 
 	public static void main(String[] args) throws Exception {
 		library();
+
 	}
 
 	public void insertbook() {
 		try {
-
-			ps = con.prepareStatement("insert into addbook(booknumber,bookname,bookprice) values('"
+			Connection connect = get.connectDb();
+			ps = connect.prepareStatement("insert into addbook(booknumber,bookname,bookprice) values('"
 					+ book.getBooknumber() + "','" + book.getBookname() + "','" + book.getBookprice() + "')");
 
 			System.out.println("" + book.getBooknumber());
@@ -29,6 +32,15 @@ public class CRUD{
 				System.out.println("not Inserted");
 			}
 
+			int a1, b1 = 0;
+			System.out.println("Process Continue Press 1 Or Main page Press 0");
+			a1 = scan.nextInt();
+			if (a1 != b1) {
+				library();
+			} else {
+				System.exit(0);
+			}
+
 		} catch (Exception e) {
 			System.out.println("Try Again");
 			e.printStackTrace();
@@ -38,8 +50,8 @@ public class CRUD{
 
 	public void updatebook() {
 		try {
-
-			ps = con.prepareStatement("update addbook set '" + book.getBookname() + "','" + book.getBookprice()
+			Connection connect = get.connectDb();
+			ps = connect.prepareStatement("update addbook set '" + book.getBookname() + "','" + book.getBookprice()
 					+ "' where '" + book.getBooknumber() + "' ");
 
 			System.out.println("" + book.getBooknumber());
@@ -58,8 +70,8 @@ public class CRUD{
 
 	public void deletebook() {
 		try {
-
-			ps = con.prepareStatement("delete from addbook where '" + book.getBooknumber() + "'");
+			Connection connect = get.connectDb();
+			ps = connect.prepareStatement("delete from addbook where '" + book.getBooknumber() + "'");
 			int i = ps.executeUpdate();
 			if (i != 0) {
 				System.out.println("deleted");
@@ -73,8 +85,8 @@ public class CRUD{
 
 	public void dispAll() {
 		try {
-
-			Statement st = con.createStatement();
+			Connection connect = get.connectDb();
+			Statement st = connect.createStatement();
 			ResultSet res = st.executeQuery("select * from addbook");
 			while (res.next()) {
 				System.out.print(res.getString(1) + "\n");
@@ -89,8 +101,8 @@ public class CRUD{
 
 	public void dispAnbook() {
 		try {
-
-			ps = con.prepareStatement("select * from addbook where '" + book.getBooknumber() + "'");
+			Connection connect = get.connectDb();
+			ps = connect.prepareStatement("select * from addbook where '" + book.getBooknumber() + "'");
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
 				System.out.print(res.getString(1) + "\n");
@@ -110,7 +122,7 @@ public class CRUD{
 		CRUD obj = new CRUD();
 		int ch = 0;
 
-		System.out.println("Library management \n" + "1. Add Book \n " + "2. Edit Book \n " + "3. Delete Book \n "
+		System.out.println("Library management \n" + "1. Add Book \n " + "2. Edit Book \n " + "3. Deletok \n "
 				+ "4. Display all Book \n" + "5.Display a Book\n" + "6. Exit ");
 		try {
 			int choice = a.nextInt();
@@ -125,7 +137,6 @@ public class CRUD{
 					System.out.println("Enter Book price");
 					b.setBookprice(a.nextInt());
 					obj.insertbook();
-
 				} catch (InputMismatchException e) {
 					System.out.println("Try again!!!!\n");
 					library();
